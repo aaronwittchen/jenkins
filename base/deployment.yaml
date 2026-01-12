@@ -21,6 +21,13 @@ spec:
       securityContext:
         fsGroup: 1000
       terminationGracePeriodSeconds: 30
+      initContainers:
+        - name: init-docker-cli
+          image: docker:cli
+          command: ['cp', '/usr/local/bin/docker', '/docker-cli/docker']
+          volumeMounts:
+            - name: docker-cli
+              mountPath: /docker-cli
       containers:
         - name: jenkins
           image: jenkins/jenkins:lts
@@ -70,6 +77,9 @@ spec:
             - name: docker-certs
               mountPath: /certs/client
               readOnly: true
+            - name: docker-cli
+              mountPath: /usr/local/bin/docker
+              subPath: docker
         - name: dind
           image: docker:dind
           securityContext:
@@ -96,6 +106,8 @@ spec:
         - name: docker-certs
           emptyDir: {}
         - name: dind-storage
+          emptyDir: {}
+        - name: docker-cli
           emptyDir: {}
 ---
 apiVersion: v1
