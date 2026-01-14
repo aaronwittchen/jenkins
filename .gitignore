@@ -1,0 +1,12 @@
+# Environment files
+.env
+*.env.local
+
+# Secrets (unencrypted)
+*-secret.yaml.dec
+*.dec
+
+# IDE
+.idea/
+.vscode/
+*.swp
